@@ -11,7 +11,7 @@ export default function App(){
     setTodos(currentTodos => {
       return [
         ...currentTodos,
-        { id: crypto.randomUUID, title: newItem, completed: 
+        { id: crypto.randomUUID(), title: newItem, completed: 
           false},
       ]
     })
@@ -27,6 +27,12 @@ export default function App(){
         }
         return todo
       })
+    })
+  }
+
+  function deleteTodoItem(id) {
+    setTodos(currentTodos => {
+      return currentTodos.filter(todo => todo.id !== id)
     })
   }
 
@@ -51,7 +57,7 @@ export default function App(){
             onChange={e => toggleTodo(todo.id, e.target.checked)} />
           {todo.title}
         </label>
-        <button className="btn btn-danger">Delete</button>
+        <button onClick={() => deleteTodoItem(todo.id)} className="btn btn-danger">Delete</button>
       </li>
         )
       })}
