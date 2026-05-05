@@ -4,10 +4,26 @@ import "./style.css"
 
 export default function App(){
   const [newItem, setNewItem] = useState("")
+  const [todos, setTodos] = useState([])
+
+  function handleSubmit(e) {
+    e.preventDefault()
+    setTodos(currentTodos => {
+      return [
+        ...currentTodos,
+        { id: crypto.randomUUID, title: newItem, completed: 
+          false},
+      ]
+    })
+    
+    setNewItem("")
+  }
+
+  
 
   return (
    <> 
-    <form className = "new-item-form">
+    <form onSubmit={handleSubmit} className = "new-item-form">
       <div className = "form-row">
         <label htmlFor="item">New Item</label>
         <input value={newItem} onChange={e => setNewItem(e.target.value)} 
@@ -17,18 +33,15 @@ export default function App(){
     </form>
     <h1 className="header">Todo List</h1>
     <ul className="list">
-      <li>
-        <label htmlFor="">item1
-          <input type="checkbox" />
+      {todos.map(todo => {
+        return <li key={todo.id}>
+        <label htmlFor="">
+          <input type="checkbox" checked= {todo.completed} />
+          {todo.title}
         </label>
         <button className="btn btn-danger">Delete</button>
       </li>
-      <li>
-        <label htmlFor="">item2
-          <input type="checkbox" />
-        </label>
-        <button className="btn btn-danger">Delete</button>
-      </li>
+      })}
     </ul>
    </>
   )
